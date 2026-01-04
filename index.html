@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmashIndex Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+        .card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        input[type=range] { cursor: pointer; }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-slate-200 font-sans flex items-center justify-center p-4">
+
+    <div class="card max-w-2xl w-full p-8 rounded-3xl shadow-2xl">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
+                SMASHINDEX CALCULATOR
+            </h1>
+            <p class="text-slate-400 mt-2 text-sm uppercase tracking-widest font-semibold">Scientific Utility Framework</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <section class="space-y-6">
+                <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    Baddie Score (BS)
+                </h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs mb-2 uppercase font-medium text-slate-400">
+                            <span>Looks Score (LS)</span><span id="ls_v">5</span>
+                        </div>
+                        <input type="range" id="ls" min="1" max="10" value="5" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none accent-emerald-400">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-2 uppercase font-medium text-slate-400">
+                            <span>Experience Score (ES)</span><span id="es_v">5</span>
+                        </div>
+                        <input type="range" id="es" min="1" max="10" value="5" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none accent-emerald-400">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-2 uppercase font-medium text-slate-400">
+                            <span>Hoeness (h)</span><span id="h_v">5</span>
+                        </div>
+                        <input type="range" id="h" min="0" max="10" value="5" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none accent-emerald-400">
+                    </div>
+                </div>
+            </section>
+
+            <section class="space-y-6">
+                <h3 class="text-lg font-bold text-rose-400 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+                    Cost per Nut (CPN)
+                </h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs mb-2 uppercase font-medium text-slate-400">
+                            <span>Distance (d)</span><span id="d_v">5</span>
+                        </div>
+                        <input type="range" id="d" min="1" max="10" value="5" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none accent-rose-400">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-2 uppercase font-medium text-slate-400">
+                            <span>Notoriety (n)</span><span id="n_v">0</span>
+                        </div>
+                        <input type="range" id="n" min="0" max="10" value="0" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none accent-rose-400">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-2 uppercase font-medium text-slate-400">
+                            <span>Difficulty (D)</span><span id="D_diff_v">5</span>
+                        </div>
+                        <input type="range" id="D_diff" min="1" max="10" value="5" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none accent-rose-400">
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="mt-12 p-6 bg-slate-800/50 rounded-2xl border border-white/5">
+            <div class="flex justify-between items-center mb-4">
+                <label class="text-sm font-bold uppercase tracking-wider text-amber-400">Hunger Index (a)</label>
+                <span id="a_val" class="text-2xl font-black text-amber-400">1.0</span>
+            </div>
+            <input type="range" id="a" min="1" max="5" step="0.1" value="1" class="w-full h-2 bg-slate-700 rounded-lg appearance-none accent-amber-400">
+            <p class="text-[10px] text-slate-500 mt-2 uppercase text-center tracking-tighter">Aumenta la tolleranza ai costi logistici basata sull'urgenza biologica</p>
+        </div>
+
+        <div class="mt-10 text-center relative overflow-hidden p-8 rounded-3xl bg-white/5">
+            <div class="relative z-10">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">Final SmashIndex</span>
+                <div id="result" class="text-8xl font-black my-2 tracking-tighter text-white">5.0</div>
+                <div id="zone-badge" class="mt-4 inline-block px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-500">
+                    Calculating...
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-8 pt-6 border-t border-white/5 flex justify-between items-center text-[10px] text-slate-500 font-medium uppercase tracking-widest">
+            <span>LevUzi x Remecs</span>
+            <span>Est. 2026</span>
+        </footer>
+    </div>
+
+    <script>
+        const fields = ['ls', 'es', 'h', 'd', 'n', 'D_diff', 'a'];
+        
+        function update() {
+            const val = (id) => parseFloat(document.getElementById(id).value);
+            
+            // Aggiorna etichette numeriche
+            fields.forEach(f => {
+                const label = document.getElementById(f + '_v') || document.getElementById(f + '_val');
+                if(label) label.innerText = f === 'a' ? val(f).toFixed(1) : val(f);
+            });
+
+            // Calcolo normalizzato (Range 0-1)
+            const bs = (val('ls') + val('es') + val('h')) / 30;
+            const cpn = (val('d') + val('n') + val('D_diff')) / 30;
+            const a = val('a');
+
+            // Logica deterministica SmashIndex
+            // Formula: S = 10 * ((bs^a) / (bs^a + cpn))^(1/a)
+            const powerBS = Math.pow(bs, a);
+            const t = powerBS / (powerBS + cpn);
+            let si = 10 * Math.pow(t, 1/a);
+            
+            if (isNaN(si)) si = 0;
+            const finalSI = si.toFixed(1);
+
+            document.getElementById('result').innerText = finalSI;
+            
+            // Gestione Zone
+            const badge = document.getElementById('zone-badge');
+            let zone = "";
+            let style = "";
+
+            if (si >= 9.5) { zone = "Wife Material"; style = "bg-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.4)]"; }
+            else if (si >= 8) { zone = "Raw Material"; style = "bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.4)]"; }
+            else if (si >= 6) { zone = "Valid Zone"; style = "bg-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.4)]"; }
+            else if (si >= 4) { zone = "3AM Mistakes"; style = "bg-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.4)]"; }
+            else { zone = "Federal Crime"; style = "bg-rose-600 shadow-[0_0_20px_rgba(225,29,72,0.4)]"; }
+
+            badge.innerText = zone;
+            badge.className = `mt-4 inline-block px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-500 text-white ${style}`;
+        }
+
+        fields.forEach(id => document.getElementById(id).addEventListener('input', update));
+        update();
+    </script>
+</body>
+</html>
